@@ -21,7 +21,7 @@ layout = [
         [sg.Text(Titulos[0]), sg.Input(size= 5, key=Titulos[0])],
         [sg.Text(Titulos[1]), sg.Input(size= 20, key=Titulos[1])], 
         [sg.Text(Titulos[2]), sg.Combo(['Fornecedo 1', 'Fornecedor 2', 'Fornecedor 3'], key=Titulos[2])],
-        [sg.Button('Adicionar'), sg.Button('Editar'), sg.Button('Salvar'), sg.Button('Excluir'), sg.Exit('Sair')],
+        [sg.Button('Adicionar'), sg.Button('Editar'), sg.Button('Salvar',disabled=True), sg.Button('Excluir'), sg.Exit('Sair')],
         [sg.Table(dados, Titulos, key='tabela')]
         ]
 
@@ -50,13 +50,13 @@ while True:
             sg.popup('Editar linha selecionada')
             for i in range(3):
                 window[Titulos[i]].update(value=dados[editarLinha][i])
-            window['Salvar'].update(disable=False)
+            window['Salvar'].update(disabled=False)
     if event == 'Salvar':
         dados[editarLinha]=[values[Titulos[0]], values[Titulos[1]], values[Titulos[2]]]
         window['tabela'].update(values=dados)
         for i in range(3):
             window[Titulos[i]].update(value='')
-        window['Salvar'].update(disable=True)
+        window['Salvar'].update(disabled=True)
 
         conexao = sqlite3.connect(db_path)
         conexao.execute("UPDATE SUPLEMENTO set PRODUTO = ?, FORNECEDOR = ? where LOTE = ?", ([values[Titulos[1]], values[Titulos[2]], values[Titulos[0]]]))
